@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme"> <div class="calculator-wrapper">
+<div class="mode-tabs">
+    <button class="tab active" id="tab-standard" onclick="switchCalculatorMode('standard')">Standard</button>
+    <button class=" tab" id="tab-programmer" onclick="switchCalculatorMode('programmer')">Programmer</button>
+</div>
+
+<div class="base-indictators" id="basePanel">
+ <div class="base-row active-base" id="row-dec"><span>DEC</span><span id="lbl-dec">0</span></div>
+ <div class="base-row" id="row-hex"><span>HEX</span><span id="lbl-hex">0</span></div>
+ <div class="base-row" id="row-bin"><span>BIN</span><span id="lbl-bin">0</span></div>
+<div class="base-row" id="row-oct"><span>OCT</span><span id="lbl-oct">0</span></div>
+
+</div>
+
+<div class="display-box">
+    <input type="text" id="mainDisplay" readonly placeholder="0">
+</div>
+
+<div class="keys-layout">
+    <button class="key key-hex" onclick="appendKey('A')">A</button>
+      <button class="key key-hex" onclick="appendKey('B')">B</button>
+  <button class="key key-hex" onclick="appendKey('C')">C</button>
+  <button class="key key-hex" onclick="appendKey('D')">D</button>
+  <button class="key key-hex" onclick="appendKey('E')">E</button>
+  <button class="key key-hex" onclick="appendKey('F')">F</button>
+
+  <button class="key key-action" onclick="clearAll()">AC</button>
+    <button class="key key-action" onclick="toggleSign()">+/-</button>
+  <button class="key key-action" onclick="appendKey('%')">%</button>
+  <button class="key key-op" onclick="appendKey('/')">&divide;</button>
+
+<button class="key key-num" onclick="appendKey('7')">7</button>
+<button class="key key-num" onclick="appendKey('8')">8</button>
+<button class="key key-num" onclick="appendKey('9')">9</button>
+<button class="key key-op" onclick="appendKey('*')">&times;</button>
+
+<button class="key key-num" onclick="appendKey('4')">4</button>
+<button class="key key-num" onclick="appendKey('5')">5</button>
+<button class="key key-num" onclick="appendKey('6')">6</button>
+<button class="key key-op" onclick="appendKey('-')">-</button>
+
+<button class="key key-num" onclick="appendKey('1')">1</button>
+<button class="key key-num" onclick="appendKey('2')">2</button>
+<button class="key key-num" onclick="appendKey('3')">3</button>
+<button class="key key-op" onclick="appendKey('+')">+</button>
+
+<button class="key key-action" onclick="deleteToken()">DEL</button>
+<button class="key key-num" onclick="appendKey('0')">0</button>
+<button class="key key-num" id="dotkey" onclick="appendKey('.')">.</button>
+<button class="key key-equal" onclick="evaluateTotal()">=</button>
+
+</div>
+</div>
+<!-- 
+<div class="calculator">
+    <div class="display-container">
+<input type="text" id="screen" readonly placeholder="0">
+
+
+    </div>
+    <div class="buttons-grid"> -->
+        <!-- <button class="btn btn-ac" onclick="clearScreen()">AC</button>
+        <button class="btn btn-del" onclick="deleteLast()">DEL</button>
+        <button class="btn btn-operator" onclick="appendValue('%')">%</button>
+        <button class="btn btn-operator" onclick="appendValue('/')">&divide;</button>
+
+
+
+<button class="btn btn-number" onclick="appendValue('7')">7</button>
+<button class="btn btn-number" onclick="appendValue('8')">8</button>
+<button class="btn btn-number" onclick="appendValue('9')">9</button>
+<button class="btn btn-operator" onclick="appendValue('*')">&times;</button>
+
+<button class="btn btn-number" onclick="appendValue('4')">4</button>
+<button class="btn btn-number" onclick="appendValue('5')">5</button>
+<button class="btn btn-number" onclick="appendValue('6')">6</button>
+<button class="btn btn-number" onclick="appendValue('-')">-</button>
+ -->
+<!-- <button class="btn btn-number" onclick="appendValue('1')">1</button>
+<button class="btn btn-number" onclick="appendValue('2')">2</button>
+<button class="btn btn-number" onclick="appendValue('3')">3</button>
+<button class="btn btn-number" onclick="appendValue('+')">+</button>
+
+<button class="btn btn-number" onclick="appendValue('0')">0</button>
+<button class="btn btn-number" onclick="appendValue('.')">.</button>
+<button class="btn btn-equal" onclick="calculate()">=</button>
+
+    </div> -->
+<!-- </div> -->
+  
+<script>
+const mainDisplay=document.getElementById('mainDisplay');
+const bodyElement=document.body;
+const basePanel=document.getElementById('basePanel');
+const dotKey=document.getElementById('dotkey');
+
+const lblDec=document.getElementById('lbl-dec');
+const lblHex=document.getElementById('lbl-hex');
+const lblBin=document.getElementById('lbl-bin');
+const lblOct=document.getElementById('lbl-oct');
+
+let globalMode='standard';
+function switchCalculatorMode(targetMode){
+    globalMode=targetMode;
+
+    document.getElementById('tab-standard').classList.remove('active');
+    document.getElementById('tab-programmer').classList.remove('active');
+    if(targetMode==='standard'){
+        document.getElementById('tab-standard').classList.add('active');
+    bodyElement.className="light-theme";
+    clearAll();
+}else {
+    document.getElementById('tab-programmer').classList.add('active');
+    bodyElement.className="dark-theme";
+    clearAll();
+}
+}
+
+function appendKey(token){
+    if(mainDisplay.value==='0' && token !=='.'){
+        mainDisplay.value=token;
+
+    }else{
+        mainDisplay.value+=token;
+
+    }
+    if(globalMode==='programmer')calculateBasesRealtime();
+}
+function clearAll(){
+    mainDisplay.value='0';
+    if(globalMode==='programmer')calculateBasesRealtime();
+}
+function deleteToken(){
+    if(mainDisplay.value.length>1){
+        mainDisplay.value=mainDisplay.value.slice(0,-1);
+    }else{
+        mainDisplay.value='0';
+    }
+    if(globalMode==='programmer')calculateBasesRealtime();
+
+}
+function toggleSign(){
+     let val=parseFloat(mainDisplay.value);
+    if(!isNaN(val)){
+        mainDisplay.value=(val* -1).toString();
+        if(globalMode==='programmer')calculateBasesRealtime();
+    }
+}
+function calculateBasesRealtime(){
+    let currentInput=mainDisplay.value;
+    if(!currentInput || currentInput==='0'){
+        clearAll()
+        return;
+    }
+    let parsedInt=NaN;
+    try{
+        if(/[A-Fa-f]/.test(currentInput)){
+            parsedInt=parseInt(currentInput,16);
+        }else{
+            parsedInt=parseInt(eval(currentInput),10);
+        }
+    }catch(e){
+        parsedInt=/[A-Fa-f]/.test(currentInput)? parsedInt(currentInput,16):parseInt(currentInput,10);
+    }
+    if(isNaN(parsedInt)){
+        return;
+    }
+    if(lblDec) lblDec.textContent=parsedInt.toString(10);
+    if(lblHex) lblHex.textContent=parsedInt.toString(16);
+    if(lblBin) lblBin.textContent=parsedInt.toString(2);
+    if(lblOct) lblOct.textContent=parsedInt.toString(8)
+}
+function evaluateTotal(){
+    try{
+        let executionString=mainDisplay.value;
+        let finalOutput=eval(executionString);
+        if(finalOutput % 1 !==0){
+            finalOutput=parseFloat(finalOutput.toFixed(4));
+        }
+        mainDisplay.value=finalOutput;
+        if(globalMode==='programmer'){
+            calculateBasesRealtime();
+        }
+    }catch(err){
+        mainDisplay.value="Error";
+    }
+}
+    // let parsedInt=parseInt(mainDisplay.value,10);
+    // if(!isNaN(parsedInt)){
+    //     lblDec.textContent="0";
+    //     lblHex.textContent="0";
+    //     lblBin.textContent="0";
+    //     lblOct.textContent="0";
+    //     return;
+    // }
+    // lblDec.textContent=parsedInt.toString(10);
+    // lblHex.textContent=parsedInt.toString(16).toUpperCase();
+    // lblBin.textContent=parsedInt.toString(2);
+ 
+</script>
+     </body>
+    </html>
+
+

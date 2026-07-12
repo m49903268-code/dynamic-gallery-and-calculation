@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+  <!-- navbar top -->
+   <nav class="navbar">
+    <div class="nav-container">
+      <div class="brand">Snap<span class="blue-text">Gallery</span></div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+         <li><a href="#" class="active-links">Gallery</a></li>
+          <li><a href="#">About</a></li>
+           <li><a href="#">Contact</a></li>
+           <li><a href="#" class="theme-icon"></a></li>
+      </ul>
+    </div>
+   </nav>
+ <div class="main-container">
+
+  <!-- main haeding -->
+   <div class="gallery-header">
+    <h1>Dynamic Gallery</h1>
+    <p class="subtitle">Explore beautiful moment</p>
+   </div>
+   
+
+   <div class="filter-buttons">
+
+  <button class="btn active" onclick="filterCategory('all')">All</button>
+   <button class="btn" onclick="filterCategory('nature')">Nature</button>
+ <button class="btn" onclick="filterCategory('tech')">Tech</button>
+ <button class="btn" onclick="filterCategory('food')">Food</button>
+
+    </div>
+   <!-- </header> -->
+   
+     <div class="gallery-grid" id="galleryGrid">
+      <!-- nature img -->
+       <div class="gallery-item" data-category="nature">
+        <img src="moun.webp">
+        
+       </div>
+
+  <div class="gallery-item" data-category="tech">
+        <img src="chair.avif">
+     
+  </div>
+
+
+  <!-- food img -->
+ <div class="gallery-item" data-category="food">
+        <img src="b2.webp">
+      
+ </div>
+ <!-- nature item -->
+
+ <div class="gallery-item" data-category="nature">
+        <img src="pasttta.jpg">
+        
+  </div>
+
+<!-- tech img -->
+
+ <div class="gallery-item" data-category="tech">
+        <img src="b2.webp">
+        
+     </div>
+     <!-- food item -->
+ <div class="gallery-item" data-category="food">
+        <img src="b1.webp">
+       
+  
+</div>
+
+ <div class="gallery-item" data-category="food">
+        <img src="chef.webp">
+       
+  
+</div>
+
+ <div class="gallery-item" data-category="food">
+        <img src="chicken kari.jpg">
+       
+  
+</div>
+
+ <div class="gallery-item" data-category="food">
+        <img src="biryani.jpg">
+       
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     </div>
+
+
+<div class="load-more-container">
+  <button class="load-more-btn">Load More</button>
+</div>
+<!-- </div> -->
+
+
+
+
+
+<!-- <script>pro.js</script> -->
+ <script>
+
+
+
+document.addEventListener("DOMContentLoaded",()=>{
+  const items=document.querySelectorAll('.gallery-item');
+  // 4 img show
+  items.forEach((item,index)=>{
+    if(index>=3){
+      item.style.display='none';
+    }
+  });
+});
+// filter scetion
+function filterCategory(category){
+  const buttons=document.querySelectorAll('.btn')
+  buttons.forEach(btn=>btn.classList.remove('active'));
+  event.target.classList.add('active');
+
+  const items=document.querySelectorAll('.gallery-item');
+  const loadMoreBtn=document.querySelector('.load-more-btn');
+
+  item.forEach(item=>{
+    const itemCategory=item.getAttribute('data-category');
+    if(category==='all'){
+      item.style.display='block';
+      loadMoreBtn.style.display='block';
+    }else if(itemCategory===category){
+      item.style.display='block';
+    }else{
+      item.style.display='none';
+    }
+  });
+
+  if(category!=='all'){
+    loadMoreBtn.style.display='none';
+  }
+}
+const loadMoreBtn=document.querySelector('.load-more-btn');
+
+if(loadMoreBtn){
+  loadMoreBtn.addEventListener('click', ()=>{
+    const items=document.querySelectorAll('.gallery-item');
+    let hiddenItemsCount=0;
+    items.forEach(item=>{
+      if(item.style.display==='none'){
+        item.style.display='block';
+        hiddenItemsCount++;
+      }
+    })
+  
+
+
+  if(hiddenItemsCount<=4){
+    loadMoreBtn.style.display='none';
+  }
+  });
+}
+ </script>
+</body>
+ </html>
